@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Cheque Processing & Verification System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #1a1a1a;
+            color: #d4c5a9;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: #1a1a1a;
+            page-break-after: always;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.15;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .title-slide {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .title-slide::before {
+ background-image: radial-gradient(circle at 30% 70%, rgba(46, 191, 174, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(212, 197, 169, 0.05) 0%, transparent 50%);
+ }
+
+        h1 {
+            font-size: 3.5em;
+            color: #d4c5a9;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #d4c5a9;
+            margin-bottom: 40px;
+            font-weight: 300;
+            border-bottom: 1px solid #d4c5a9;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: #d4c5a9;
+            margin: 30px 0 20px 0;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #a89968;
+            margin-bottom: 40px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .author-badge {
+            width: 50px;
+            height: 50px;
+            background: #2ebfae;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .author-text {
+            text-align: left;
+        }
+
+        .author-name {
+            font-size: 1.2em;
+            color: #d4c5a9;
+            font-weight: 500;
+        }
+
+        .author-sub {
+            font-size: 0.9em;
+            color: #a89968;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .content-item {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid #d4c5a9;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            background: rgba(52, 52, 52, 0.9);
+            transform: translateX(5px);
+        }
+
+        .content-number {
+            font-size: 1.5em;
+            color: #2ebfae;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .content-title {
+            font-size: 1.1em;
+            color: #d4c5a9;
+            line-height: 1.4;
+        }
+
+        ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        li {
+            padding: 15px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #b8a97a;
+        }
+
+        li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2ebfae;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .problem-item::before {
+            content: '✗';
+            color: #ff6b6b;
+        }
+
+        .highlight {
+            color: #2ebfae;
+            font-weight: 500;
+        }
+
+        .table-wrapper {
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            :: rgba(42, 42, 42, 0.7);
+        }
+
+        th {
+            background: #2a2a2a;
+            color: #d4c5a9;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.2em;
+            border-bottom: 2px solid #d4c5a9;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #3a3a3a;
+            color: #b8a97a;
+            font-size: 1.1em;
+        }
+
+        .tier-box {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #2ebfae;
+        }
+
+        .tier-success {
+            border-left-color: #2ebfae;
+        }
+
+        .tier-warning {
+            border-left-color: #f39c12;
+        }
+
+        .tier-danger {
+            border-left-color: #e74c3c;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 30px;
+            border-radius: 8px;
+            border-top: 3px solid #2ebfae;
+        }
+
+        .metric-value {
+            font-size: 3em;
+            color: #2ebfae;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .metric-label {
+            font-size: 1.3em;
+            color: #b8a97a;
+        }
+
+        .quote {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 30px;
+            border-left: 4px solid #2ebfae;
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 1.2em;
+            color: #b8a97a;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            color: #d4c5a9;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #2ebfae 0%, #1a8d7d 100%);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+            color: white;
+        }
+
+        .cta-box h3 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .cta-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #2ebfae;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 191, 174, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #1a8d7d;
+            transform: scale(1.1);
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            left: 80px;
+            font-size: 1em;
+            color: #6a6a6a;
+        }
+
+        .code-block {
+            background: rgba(42, 42, 42, 0.9);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #2ebfae;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #b8a97a;
+            overflow-x: auto;
+        }
+
+        .architecture-box {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #3a3a3a;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #b8a97a;
+        }
+
+        .architecture-layer {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 3px solid #2ebfae;
+        }
+
+        .fraud-example {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .fraud-box {
+            background: rgba(42, 42, 42, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 45%;
+        }
+
+        .fraud-arrow {
+            font-size: 2em;
+            color: #2ebfae;
+        }
+
+        @media print {
+            .navigation {
+                display: none;
+            }
+            .slide {
+                page-break-after: always;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            .fraud-example {
+                flex-direction: column;
+            }
+            .fraud-box {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .fraud-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide title-slide">
+        <div class="slide-content">
+            <h1>Automated Cheque Processing<br>& Verification System</h1>
+            <p class="subtitle">Advanced Image Recognition & Fraud Detection Platform</p>
+            <div class="author-info">
+                <div class="author-badge">D</div>
+                <div class="author-text">
+                    <div class="author-name">Author: Daltex-IT Team</div>
+                    <div class="author-sub">Powered By AI</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">1 / 27</div>
+    </div>
+
+    <!-- Slide 2: Contents -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>CONTENTS</h2>
+            <div class="content-grid">
+                <div class="content-item">
+                    <div class="content-number">1</div>
+                    <div class="content-title">Problem Statement</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">2</div>
+                    <div class="content-title">System Overview</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">3</div>
+                    <div class="content-title">Key Features</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">4</div>
+                    <div class="content-title">Advanced Features</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">5</div>
+                    <div class="content-title">Processing Modes</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">6</div>
+                    <div class="content-title">Technical Architecture</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">7</div>
+                    <div class="content-title">Logo Detection - 3-Tier System</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">8</div>
+                    <div class="content-title">ROI Pattern Analysis</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">9</div>
+                    <div class="content-title">Fraud Detection in Action</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">10</div>
+                    <div class="content-title">User Interface Dashboard</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">11</div>
+                    <div class="content-title">Results Classification</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">12</div>
+                    <div class="content-title">Performance Metrics</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">13</div>
+                    <div class="content-title">Real-World Impact</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">14</div>
+                    <div class="content-title">Security & Compliance</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">15</div>
+                    <div class="content-title">Configuration Flexibility</div>
+                </div>
+               
+                <div class="content-item">
+                    <div class="content-number">16</div>
+                    <div class="content-title">System Requirements</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">17</div>
+                    <div class="content-title">Competitive Advantages</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">18</div>
+                    <div class="content-title">Implementation Timeline</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">19</div>
+                    <div class="content-title">Support & Maintenance</div>
+                </div>
+                <div class="content-item">
+                    <div class="content-number">20</div>
+                    <div class="content-title">Pricing & Packages</div>
+                </div>
+              
+                <div class="content-item">
+                    <div class="content-number">21</div>
+                    <div class="content-title">Questions & Answers</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">2 / 27</div>
+    </div>
+
+    <!-- Slide 3: Problem Statement -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>1. Problem Statement</h2>
+            <h3>Current Challenges in Cheque Processing:</h3>
+            <ul>
+                <li class="problem-item">Manual verification is slow and error-prone</li>
+                <li class="problem-item">Fraudulent cheques cost banks millions annually</li>
+                <li class="problem-item">Pattern tampering and forgery difficult to detect</li>
+                <li class="problem-item">High volume processing creates bottlenecks</li>
+                <li class="problem-item">Inconsistent quality control</li>
+            </ul>
+            <h3 style="margin-top: 50px;">💡 Solution:</h3>
+            <p style="font-size: 1.3em; color: #2ebfae; margin-top: 20px;">Automated AI-powered verification system</p>
+        </div>
+        <div class="slide-number">3 / 27</div>
+    </div>
+
+    <!-- Slide 4: System Overview -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>2. System Overview</h2>
+            <h3>📊 Complete Cheque Verification Pipeline</h3>
+            <ul>
+                <li><span class="highlight">Image Acquisition</span> - U1: UV, F1: Front</li>
+                <li><span class="highlight">Bank Identification</span> - MICR + Logo Detection</li>
+                <li><span class="highlight">Pattern Recognition</span> - ROI Analysis</li>
+                <li><span class="highlight">Fraud Detection</span> - Character Analysis</li>
+                <li><span class="highlight">Quality Assessment</span> - Print Quality Check</li>
+                <li><span class="highlight">Final Classification</span> - Accept/Review/Reject</li>
+            </ul>
+            <div style="text-align: center; margin-top: 50px; font-size: 1.5em; color: #2ebfae;">
+                ⚡ Real-time processing with 95%+ accuracy
+            </div>
+        </div>
+        <div class="slide-number">4 / 27</div>
+    </div>
+
+    <!-- Slide 5: Key Features -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>3. Key Features</h2>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <h3>✅ Multi-Bank Support</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">Dynamic bank detection via MICR</li>
+                        <li style="padding-left: 0;">Logo template matching</li>
+                        <li style="padding-left: 0;">Support for 50+ Egyptian banks</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h3>✅ Version Detection</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">Old vs New format identification</li>
+                        <li style="padding-left: 0;">Adaptive ROI checking</li>
+                        <li style="padding-left: 0;">Version-specific processing</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="metric-card" style="margin-top: 30px;">
+                <h3>✅ Pattern Verification</h3>
+                <ul style="list-style: disc; margin-left: 20px;">
+                    <li style="padding-left: 0;">Multi-ROI analysis (MICR + Security patterns)</li>
+                    <li style="padding-left: 0;">Configurable threshold (55-70%)</li>
+                    <li style="padding-left: 0;">Quick scan mode for high-volume processing</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">5 / 27</div>
+    </div>
+
+    <!-- Slide 6: Advanced Features -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>4. Advanced Features</h2>
+            <div class="tier-box tier-success">
+                <h3>🔍 Fraud Detection Engine</h3>
+                <ul>
+                    <li>Character Whiteness Analysis (>78% threshold)</li>
+                    <li>Currency symbol verification</li>
+                    <li>Out-of-bounds detection</li>
+                </ul>
+            </div>
+            <div class="tier-box tier-warning">
+                <h3>🔍 Print Quality Assessment</h3>
+                <ul>
+                    <li>Bad printing detection</li>
+                    <li>Faded MICR identification</li>
+                    <li>Missing F1 & U1 file alerts</li>
+                </ul>
+            </div>
+            <div class="tier-box tier-danger">
+                <h3>🔍 Special Bank Handling</h3>
+                <ul>
+                    <li>Can Specify a Unique bank only for cheque processing</li>
+                    <li>Supports both Inward & Outward Cheques</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">6 / 27</div>
+    </div>
+
+    <!-- Slide 7: Processing Modes -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>5. Processing Modes</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Speed</th>
+                            <th>Accuracy</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Quick Scan</strong></td>
+                            <td>⚡⚡⚡ Very Fast</td>
+                            <td>Good</td>
+                            <td>High-volume batch</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Standard</strong></td>
+                            <td>⚡⚡ Normal</td>
+                            <td>High</td>
+                            <td>Daily processing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full Verification</strong></td>
+                            <td>⚡ Thorough</td>
+                            <td>Highest</td>
+                            <td>Suspicious cheques</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 style="margin-top: 40px;">Flexible Configuration:</h3>
+            <ul>
+                <li>Enable/disable features per requirement</li>
+                <li>Adjustable confidence thresholds</li>
+                <li>Selective logo detection</li>
+            </ul>
+        </div>
+        <div class="slide-number">7 / 27</div>
+    </div>
+
+    <!-- Slide 8: Technical Architecture -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>6. Technical Architecture</h2>
+            <div class="architecture-box">
+                <div class="architecture-layer">
+                    <strong>Input Layer</strong><br>
+                    U1 Images (UV) + F1 Images (Front)
+                </div>
+                <div style="text-align: center; margin: 10px 0;">↓</div>
+                <div class="architecture-layer">
+                    <strong>Image Processing Layer</strong><br>
+                    • OpenCV Template Matching<br>
+                    • MICR Reading & OCR<br>
+                    • ROI Extraction & Analysis
+                </div>
+                <div style="text-align: center; margin: 10px 0;">↓</div>
+                <div class="architecture-layer">
+                    <strong>AI Detection Layer</strong><br>
+                    • Logo Recognition (3-tier)<br>
+                    • Pattern Verification<br>
+                    • Fraud Detection
+                </div>
+                <div style="text-align: center; margin: 10px 0;">↓</div>
+                <div class="architecture-layer">
+                    <strong>Classification Layer</strong><br>
+                    Logo Success | Logo Lacks | Logo Fail
+                </div>
+                <div style="text-align: center; margin: 10px 0;">↓</div>
+                <div class="architecture-layer">
+                    <strong>Output Layer</strong><br>
+                    Accepted | Review Queue | Rejected
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">8 / 27</div>
+    </div>
+
+    <!-- Slide 9: Logo Detection - 3-Tier System -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>7. Logo Detection - 3-Tier System</h2>
+            <h3 style="text-align: center; margin-bottom: 40px;">🎯 Intelligent Confidence Scoring</h3>
+            
+            <div class="tier-box tier-success">
+                <h3>✅ ACCEPTED (Score > 0.7)</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">High confidence match → Automatic approval</p>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>⚠️ LACKS (Score 0.55-0.7)</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">Medium confidence → Manual review queue</p>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>❌ FAILED (Score < 0.55)</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">Low confidence / mismatch → Rejection / Investigation</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; font-size: 1.3em; color: #2ebfae;">
+                Result: 40% reduction in false positives
+            </div>
+        </div>
+        <div class="slide-number">9 / 27</div>
+    </div>
+
+    <!-- Slide 10: ROI Pattern Analysis -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>8. ROI Pattern Analysis</h2>
+            <h3>Multi-Layer Security Verification:</h3>
+            
+            <div class="tier-box tier-success">
+                <h3>Pattern 1: MICR Line (Bottom strip)</h3>
+                <ul>
+                    <li>Black Pixel Ratio: 70%+ required</li>
+                    <li>Status: ✓ Accepted / ✗ Recheck</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>Pattern 2: Security Region 1</h3>
+                <ul>
+                    <li>Black Pixel Ratio: 70%+ required</li>
+                    <li>Status: ✓ Accepted / ✗ Recheck</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>Pattern 3: Security Region 2</h3>
+                <ul>
+                    <li>Black Pixel Ratio: 70%+ required</li>
+                    <li>Status: ✓ Accepted / ✗ Recheck</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 40px;">Version-Aware Processing:</h3>
+            <ul>
+                <li>Old Cheques: MICR pattern only</li>
+                <li>New Cheques: All patterns</li>
+            </ul>
+        </div>
+        <div class="slide-number">10 / 27</div>
+    </div>
+
+    <!-- Slide 11: Fraud Detection in Action -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>9. Fraud Detection in Action</h2>
+            <h3>Character Whiteness Analysis:</h3>
+            
+            <div class="fraud-example">
+                <div class="fraud-box">
+                    <h4>Before Processing: (Normal)</h4>
+                    <div class="code-block">
+                        ┌──────────────┐<br>
+                        │ EGP 1000     │<br>
+                        └──────────────┘
+                    </div>
+                </div>
+                <div class="fraud-arrow">→</div>
+                <div class="fraud-box">
+                    <h4>After Analysis: (Normal)</h4>
+                    <div class="code-block">
+                        ┌──────────────┐<br>
+                        │ EGP 1000     │<br>
+                        └──────────────┘                  
+				  </div>
+                </div>
+            </div>
+
+            <div class="fraud-example">
+                <div class="fraud-box">
+				    <h4>Before Processing: (Altered)</h4>
+                    <div class="code-block">
+                        ┌──────────────┐<br>
+                        │ EGP 1███     │<br>
+                        └──────────────┘
+                    </div>
+                </div>
+                <div class="fraud-arrow">→</div>
+                <div class="fraud-box">
+				    <h4>After Analysis: (Altered)</h4>
+                    <div class="code-block">
+                        ┌──────────────┐<br>
+                        │ EGP 1█00     │<br>
+                        └──────────────┘                  
+				   </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Detection Algorithm:</h3>
+            <ul>
+                <li>Locate currency symbol (EGP)</li>
+                <li>Extract character region</li>
+                <li>Analyze pixel whiteness</li>
+                <li>Flag if >78% white pixels</li>
+            </ul>
+        </div>
+        <div class="slide-number">11 / 27</div>
+    </div>
+
+    <!-- Slide 12: User Interface Dashboard -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>10. User Interface Dashboard</h2>
+            <h3>📊 Real-time Processing Dashboard</h3>
+            <ul>
+                <li>Live processing statistics</li>
+                <li>Visual cheque status indicators</li>
+                <li>Batch processing progress</li>
+                <li>Fraud alert notifications</li>
+                <li>Export results to CSV/Excel</li>
+            </ul>
+            
+            <div class="metric-grid" style="margin-top: 40px;">
+                <div class="metric-card">
+                    <h3>✅ Intuitive Design</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">Auto cheque upload from a chosen folder</li>
+                        <li style="padding-left: 0;">Real-time status updates</li>
+                        <li style="padding-left: 0;">One-click batch processing</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h3>✅ Advanced Analytics</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">Processing history</li>
+                        <li style="padding-left: 0;">Performance metrics</li>
+                        <li style="padding-left: 0;">Fraud pattern analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">12 / 27</div>
+    </div>
+
+    <!-- Slide 13: Results Classification -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>11. Results Classification</h2>
+            <h3>🎯 Three-Tier Classification System</h3>
+            
+            <div class="tier-box tier-success">
+                <h3>✅ ACCEPTED</h3>
+                <ul>
+                    <li>Logo match confidence > 0.7</li>
+                    <li>All ROI patterns verified</li>
+                    <li>No fraud indicators detected</li>
+                    <li>Print quality meets standards</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>⚠️ REVIEW REQUIRED</h3>
+                <ul>
+                    <li>Logo match confidence 0.55-0.7</li>
+                    <li>Partial pattern verification</li>
+                    <li>Minor quality issues</li>
+                    <li>Borderline fraud indicators</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>❌ REJECTED</h3>
+                <ul>
+                    <li>Logo match confidence < 0.55</li>
+                    <li>Failed pattern verification</li>
+                    <li>Clear fraud indicators</li>
+                    <li>Poor print quality</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">13 / 27</div>
+    </div>
+
+    <!-- Slide 14: Performance Metrics -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>12. Performance Metrics (PC-Processor dependent [4-16 cores])</h2>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <p class="metric-label">Full Detection Mode</p>
+                    <div class="metric-value">100-400</div>
+                    <p class="metric-label">cheques/min</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">Quick Scan</p>
+                    <div class="metric-value">1000-4000</div>
+                    <p class="metric-label">cheques/min</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">Bank Detection</p>
+                    <div class="metric-value">98.5%</div>
+                    <p class="metric-label">accuracy</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">Logo Matching</p>
+                    <div class="metric-value">98.5%</div>
+                    <p class="metric-label">accuracy</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px; font-size: 1.8em; color: #2ebfae;">
+                ⚡ 66x faster than manual processing
+            </div>
+        </div>
+        <div class="slide-number">14 / 27</div>
+    </div>
+
+    <!-- Slide 15: Real-World Impact -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>13. Real-World Impact</h2>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <p class="metric-label">Processing Time</p>
+                    <div class="metric-value">80%</div>
+                    <p class="metric-label">reduction</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">Error Rate</p>
+                    <div class="metric-value">95%</div>
+                    <p class="metric-label">reduction</p>
+                </div>
+                
+            </div>
+            
+            <h3 style="margin-top: 40px;">📈 Business Benefits:</h3>
+            <ul>
+                <li>Reduced operational costs</li>
+                <li>Improved customer satisfaction</li>
+                <li>Enhanced security and compliance</li>
+                <li>Scalable processing capacity</li>
+            </ul>
+        </div>
+        <div class="slide-number">15 / 27</div>
+    </div>
+
+    <!-- Slide 16: Security & Compliance -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>14. Security & Compliance</h2>
+            
+            <div class="tier-box tier-success">
+                <h3>🔒 Data Security</h3>
+                <ul>
+                    <li>No cloud processing - 100% local</li>
+                    <li>Encrypted storage for sensitive data</li>
+                    <li>Audit trail logging</li>
+                    
+                </ul>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>📋 Compliance Features</h3>
+                <ul>
+                    <li>Configurable retention policies</li>
+                    <li>Full processing history (CSV export)</li>
+                    <li>Bank-specific rule customization</li>
+                    <li>Regulatory reporting ready</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>🛡️ Fraud Prevention</h3>
+                <ul>
+                    <li>Multi-layer verification</li>
+                    <li>Real-time alerts</li>
+                    <li>Historical pattern analysis</li>
+                    <li>Suspicious activity tracking</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">16 / 27</div>
+    </div>
+
+    <!-- Slide 17: Configuration Flexibility -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>15. Configuration Flexibility</h2>
+            <h3>Fully Customizable System:</h3>
+            
+            <div class="code-block">
+			    <h4>All paths and thresholds are to be edited/updated from config.json file</h4>
+            </div>
+            
+            <h3 style="margin-top: 40px;">🔧 Configuration Options:</h3>
+            <ul>
+                <li>Adjustable confidence thresholds</li>
+                <li>Custom ROI regions per bank</li>
+                <li>Flexible file path configurations</li>
+                <li>Bank-specific processing rules</li>
+            </ul>
+        </div>
+        <div class="slide-number">17 / 27</div>
+    </div>
+
+    <!-- Slide 18: Future Enhancements --
+    <div class="slide">
+        <div class="slide-content">
+            <h2>16. Future Enhancements</h2>
+            <h3>🚀 Upcoming Features:</h3>
+            
+            <div class="tier-box tier-success">
+                <h3>AI/ML Integration</h3>
+                <ul>
+                    <li>Deep learning for improved accuracy</li>
+                    <li>Adaptive learning from manual reviews</li>
+                    <li>Predictive fraud pattern recognition</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>Advanced Analytics</h3>
+                <ul>
+                    <li>Real-time dashboard with live metrics</li>
+                    <li>Trend analysis and reporting</li>
+                    <li>Customizable alert system</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>Extended Capabilities</h3>
+                <ul>
+                    <li>Mobile app for remote monitoring</li>
+                    <li>API integration with banking systems</li>
+                    <li>Multi-language support</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">18 / 27</div>
+    </div>
+-->
+    <!-- Slide 19: System Requirements -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>16. System Requirements</h2>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <h3>Minimum:</h3>
+                    <div class="code-block" style="margin-top: 15px;">
+- OS: Windows 10/11 (64-bit)<br>
+- CPU: Intel i5 or equivalent<br>
+- RAM: 4GB<br>
+- Storage: 10GB<br>
+- .NET Framework 4.7.2+<br>
+- OpenCV Sharp 4.x
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <h3>Recommended:</h3>
+                    <div class="code-block" style="margin-top: 15px;">
+- OS: Windows 11 Pro (64-bit)<br>
+- CPU: Intel i7/i9 (8+ cores)<br>
+- RAM: 16GB<br>
+- Storage: SSD 50GB<br>
+- GPU: NVIDIA (optional, for future)<br>
+- Multi-core processor for parallel processing
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; font-size: 1.3em; color: #2ebfae;">
+                💡 Performance scales with hardware capabilities
+            </div>
+        </div>
+        <div class="slide-number">19 / 27</div>
+    </div>
+
+    <!-- Slide 20: Competitive Advantages -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>17. Competitive Advantages</h2>
+            
+            <div class="tier-box tier-success">
+                <h3>✅ Speed & Efficiency</h3>
+                <ul>
+                    <li>66x faster than manual processing</li>
+                    <li>Multiple processing modes</li>
+                    <li>Batch processing capabilities</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>✅ Accuracy & Reliability</h3>
+                <ul>
+                    <li>98.5% accuracy in bank detection</li>
+                    <li>Multi-layer verification system</li>
+                    <li>Reduced false positives</li>
+                </ul>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>✅ Flexibility & Customization</h3>
+                <ul>
+                    <li>Configurable thresholds and rules</li>
+                    <li>Support for 50+ Egyptian banks</li>
+                    <li>Easy integration with existing systems</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">20 / 27</div>
+    </div>
+
+    <!-- Slide 21: Implementation Timeline -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>18. Implementation Timeline</h2>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Duration</th>
+                            <th>Key Activities</th>
+                            <th>Deliverables</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Planning</strong></td>
+                            <td>1-2 weeks</td>
+                            <td>Requirements gathering, System design</td>
+                            <td>Project plan, Technical specifications</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Development</strong></td>
+                            <td>4-6 weeks</td>
+                            <td>Coding, Testing, Integration</td>
+                            <td>Working prototype, Test reports</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deployment</strong></td>
+                            <td>1-2 weeks</td>
+                            <td>Installation, Configuration, Training</td>
+                            <td>Live system, User documentation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support</strong></td>
+                            <td>Ongoing</td>
+                            <td>Maintenance, Updates, Enhancements</td>
+                            <td>Support services, Version updates</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; font-size: 1.3em; color: #2ebfae;">
+                ⏱️ Total implementation: 6-10 weeks
+            </div>
+        </div>
+        <div class="slide-number">21 / 27</div>
+    </div>
+
+    <!-- Slide 22: Support & Maintenance -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>19. Support & Maintenance</h2>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <h3>🛠️ Technical Support</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">24/7 emergency support</li>
+                        <li style="padding-left: 0;">Dedicated account manager</li>
+                        <li style="padding-left: 0;">Remote troubleshooting</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h3>🔄 System Updates</h3>
+                    <ul style="list-style: disc; margin-left: 20px;">
+                        <li style="padding-left: 0;">Regular security patches</li>
+                        <li style="padding-left: 0;">Feature enhancements</li>
+                        <li style="padding-left: 0;">Bank template updates</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="metric-card" style="margin-top: 30px;">
+                <h3>📚 Training & Documentation</h3>
+                <ul style="list-style: disc; margin-left: 20px;">
+                    <li style="padding-left: 0;">Comprehensive user manuals</li>
+                    <li style="padding-left: 0;">Online training sessions</li>
+                    <li style="padding-left: 0;">Technical documentation</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">22 / 27</div>
+    </div>
+
+    <!-- Slide 23: Pricing & Packages -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>20. Pricing & Packages</h2>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Features</th>
+                            <th>Support</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td><strong>Enterprise</strong></td>
+                            <td>All features, unlimited banks</td>
+                            <td>24/7 dedicated support</td>
+                            <td>$XXXX</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; font-size: 1.3em; color: #2ebfae;">
+                💰 Custom pricing available for large deployments
+            </div>
+            
+           
+        </div>
+        <div class="slide-number">23 / 27</div>
+    </div>
+
+   
+    <!-- Slide 25: Questions & Answers -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>21. Questions & Answers</h2>
+            <h3>❓ Common Questions:</h3>
+            
+            <div class="tier-box tier-success">
+                <h3>Q: Can it handle damaged or poor-quality cheques?</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">A: Yes, with configurable quality thresholds</p>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>Q: What happens if a bank adds a new cheque format?</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">A: Simple template update - no coding required</p>
+            </div>
+
+            <div class="tier-box tier-danger">
+                <h3>Q: Is internet connection required?</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">A: No, 100% offline processing</p>
+            </div>
+
+            <div class="tier-box tier-success">
+                <h3>Q: Can it integrate with our banking software?</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">A: Yes, via CSV export or custom API</p>
+            </div>
+
+            <div class="tier-box tier-warning">
+                <h3>Q: What about data privacy?</h3>
+                <p style="font-size: 1.2em; margin-top: 15px;">A: All processing is local - no cloud upload</p>
+            </div>
+        </div>
+        <div class="slide-number">25 / 27</div>
+    </div>
+
+    <!-- Slide 26: Thank You -->
+    <div class="slide title-slide">
+        <div class="slide-content">
+            <h1>Thank You!</h1>
+            <p class="subtitle">Let's Revolutionize Your Cheque Processing Together</p>
+            <div style="margin-top: 50px; font-size: 1.3em; text-align: center;">
+                <p style="margin: 20px 0;">📧 Email: daltexit@gmail.com</p>
+                <p style="margin: 20px 0;">📞 Phone: +20-122-744-3131</p>
+                <p style="margin: 20px 0;">🌐 www.chequeprocessing.com</p>
+            </div>
+           
+        </div>
+        <div class="slide-number">26 / 27</div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="window.print()">🖨️</button>
+        <button class="nav-btn" onclick="downloadHTML()">💾</button>
+    </div>
+
+    <script>
+        function downloadHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Automated-Cheque-Processing-System.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
