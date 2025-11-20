@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheque Processing Application - Operation Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            padding-left: 15px;
+            border-left: 3px solid #764ba2;
+        }
+        
+        .step {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .checkbox-feature {
+            background: #e8f5e9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .checkbox-feature strong {
+            color: #2e7d32;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .warning strong {
+            color: #856404;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .info strong {
+            color: #0c5460;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+            padding-left: 10px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        
+        .file-structure {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .output-box {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+        
+        .output-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .listbox-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 3px solid #6c757d;
+            border-radius: 5px;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+           
+            <h1>🏦 Cheque Processing Application</h1>
+            <p>Complete Operation Guide & Processing Conditions</p>
+			
+			<div class="header-image">
+			<p>~~~~~~~~</p>
+			<p>~~~~~~~~</p>
+			<p>All Details</p>
+                <img src="image1.png" alt="Cheque Processing Application" style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            </div>
+			
+			<p></p>
+			<p></p>
+			<p>Final Results Only</p>
+			<div class="header-image">
+                <img src="image.png" alt="Cheque Processing Application" style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            </div>
+
+        </header>
+        
+        <div class="content">
+            <!-- PREREQUISITES -->
+            <div class="section">
+                <h2>📋 Prerequisites & Setup</h2>
+                
+                <h3>Configuration File (config.json)</h3>
+                <div class="info">
+                    <strong>Note:</strong> This file must exist in the application root directory. All paths and thresholds are configurable.
+                </div>
+                <div class="file-structure">
+{
+  "input_cheques_folder": "input_cheques",
+  
+  "separator_template_path": "separator.tif",
+  
+  "reference_digits_folder": "reference_digits",
+  
+  "reference_banks_folder": "reference_banks",
+  
+  "oseparator_template_path": "Oseparator.tif",
+  
+  "bank_mapping_file": "bank_mapping.txt",
+  
+  "saved_bank_name": "CIB",
+ 
+  "egp_roi_offsets": {
+    "x_offset": 60,
+    "y_offset": -15,
+    "width": 225,
+    "height": 55
+  },
+  
+  "template_matching_thresholds": {
+    "separator_score": 0.5,
+    "currency_score": 0.5,
+    "oseperator_score": 0.5
+  },
+   
+  "currency_search_region": {
+    "right_portion": 0.33,
+    "upper_portion": 0.67
+  },
+  
+  "roi_analysis_thresholds": {
+    "normal_mode": 70,
+    "quick_scan_mode": 55
+  },
+  
+  "logo_detection_thresholds": {
+    "high_confidence": 0.7,
+    "medium_confidence": 0.55,
+    "low_confidence": 0.55
+  },
+  
+  "fraudulent_detection_thresholds": {
+    "white_pixel_percentage": 78.0
+  }
+}
+                </div>
+                
+                <h3>Required Files & Folders</h3>
+                <div class="file-structure">
+config.json - Configuration file (see above)
+coords.json - Bank ROI coordinates for pattern detection
+exbanks.txt - Special banks list (one bank name per line)
+separator.tif - MICR separator template
+Oseparator.tif - Old cheque separator template
+bank_mapping.txt - Bank Code to name mapping
+
+reference_banks_folder/ - Bank logo templates
+  ├── AAIB1_L.tif
+  ├── CIB1_L.tif
+  └── ... (_L.tif suffix required)
+
+reference_digits_folder/ - Digit templates
+  ├── 0.tif
+  ├── 1.tif
+  ├── ...
+  └── 9.tif
+
+currency/ - Currency symbol templates
+  ├── EGP.tif
+  ├── USD.tif
+  └── ... (any supported format)
+
+input_cheques_folder/ - Input cheque images
+  ├── CHQ001_U1.tiff (front side)
+  ├── CHQ001_F1.tiff (back side with MICR)
+  ├── CHQ002_U1.tiff
+  └── CHQ002_F1.tiff
+                </div>
+                
+                <h3>Image Format Requirements</h3>
+                <ul>
+                    <li><strong>U1 Files:</strong> Front side of cheque (U1.tiff or U1.tif)</li>
+                    <li><strong>F1 Files:</strong> Back side with MICR line (F1.tiff or F1.tif)</li>
+                    <li>Both files must have matching base names (e.g., CHQ001_U1.tiff and CHQ001_F1.tiff)</li>
+                    <li>Supported formats: .tiff, .tif, .png, .jpg, .jpeg, .bmp</li>
+                </ul>
+            </div>
+
+                <h3>Configuration Parameters Explained</h3>
+                
+                <div class="checkbox-feature">
+                    <strong>📁 File Paths</strong>
+                    <ul>
+                        <li><code>input_cheques_folder</code>: Directory containing U1/F1 image pairs</li>
+                        <li><code>saved_bank_name</code>: Default bank name used when Bank Name Mode is enabled</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>📐 EGP ROI Offsets</strong>
+                    <ul>
+                        <li><code>x_offset: 60</code>: Horizontal pixels from currency location</li>
+                        <li><code>y_offset: -15</code>: Vertical pixels from currency location (negative = up)</li>
+                        <li><code>width: 225</code>: ROI width for character analysis</li>
+                        <li><code>height: 55</code>: ROI height for character analysis</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>🔍 Currency Search Region</strong>
+                    <ul>
+                        <li><code>right_portion: 0.33</code>: Search rightmost 33% of image width</li>
+                        <li><code>upper_portion: 0.67</code>: Search upper 67% of image height</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>⚙️ Template Matching Thresholds (0.0 - 1.0)</strong>
+                    <ul>
+                        <li><code>separator_score: 0.5</code>: MICR separator minimum confidence</li>
+                        <li><code>currency_score: 0.5</code>: Currency symbol minimum confidence</li>
+                        <li><code>oseperator_score: 0.5</code>: Old separator minimum confidence</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>📊 ROI Analysis Thresholds (Black Pixel %)</strong>
+                    <ul>
+                        <li><code>normal_mode: 70</code>: 70% BPR required for pattern acceptance</li>
+                        <li><code>quick_scan_mode: 55</code>: 55% BPR for fast processing</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>🏦 Logo Detection Thresholds (0.0 - 1.0)</strong>
+                    <ul>
+                        <li><code>high_confidence: 0.7</code>: Score > 0.7 = Success (listBoxLogoSuccess)</li>
+                        <li><code>medium_confidence: 0.55</code>: Score 0.55-0.7 = Lacks (RecheckL)</li>
+                        <li><code>low_confidence: 0.55</code>: Score < 0.55 = Failed (RecheckF)</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>⚠️ Fraudulent Detection Threshold (White Pixel %)</strong>
+                    <ul>
+                        <li><code>white_pixel_percentage: 78.0</code>: Characters with >78% white pixels flagged as fraudulent</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- OPERATION STEPS -->
+            <div class="section">
+                <h2>🚀 Operation Steps</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Configure Processing Options</strong>
+                    <p>Before starting, configure the checkboxes in the UI to control what features are enabled:</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Pattern Detection (pattern Checkbox)</strong>
+                    <p>Enables ROI pattern analysis. When disabled, all pattern checks are skipped.</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Quick Scan Mode (Micr_Ink_Detection_Only Checkbox)</strong>
+                    <p>Fast processing mode - only checks MICR ROI (2nd pattern) with 55% threshold. Automatically enables Pattern Detection and disables Version_detection, Fraudulent, Bad Print, and Visualization.</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Version Detection (versionCheckbox)</strong>
+                    <p>Detects if cheque is "Old" or "New" based on oseparator and character analysis. Affects ROI checking logic (Old cheques only check MICR pattern).</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Bank Name Mode (Bank Name Checkbox)</strong>
+                    <p>When CHECKED: Uses default bank name from textbox, skips all F1 file processing. When UNCHECKED: Extracts bank from F1 MICR Bank Code.</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Fraudulent Detection (fraudulent Checkbox)</strong>
+                    <p>Analyzes character whiteness in currency ROI. Marks cheques with >78% white pixels as fraudulent (listBox11).</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Bad Print Detection (bad Print Checkbox)</strong>
+                    <p>Detects printing issues (no currency found, out of bounds, etc.). Results go to listBox13.</p>
+                </div>
+                
+                <div class="checkbox-feature">
+                    <strong>✓ Visualization (visualization Checkbox)</strong>
+                    <p>Shows debug images with currency location, ROI, and search regions. Only displays for items in fraudulent or bad print lists.</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Select Input Folder (Optional)</strong>
+                    <p>Click "Browse Folder" button to select a custom input folder. If not selected, uses <code>input_cheques_folder</code> from config.json.</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Set Default Bank Name (if using Bank Name Mode)</strong>
+                    <p>If bank Name Checkbox is checked, enter or select bank name in textbox/dropdown. This will be used for all cheques.</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Start Processing</strong>
+                    <p>Click "Start button" to begin processing. Progress bar shows completion percentage (0-100%).</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Review Results</strong>
+                    <p>Check the various listboxes to review categorized results. Click any item to view corresponding U1/F1 images in picture boxes.</p>
+                </div>
+            </div>
+
+            <!-- PROCESSING PHASES -->
+            <div class="section">
+                <h2>⚙️ Processing Phases</h2>
+                
+                <h3>Phase 1: File Processing & Classification (0-70%)</h3>
+                <ol>
+                    <li><strong>F1 File Handling:</strong>
+                        <ul>
+                            <li>If Bank Name Mode is ON: Skip F1 processing, use default bank</li>
+                            <li>If Bank Code Mode is ON: Process F1 for MICR extraction</li>
+                            <li>Missing F1 → Uses default bank name, continues processing</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Bank Code Extraction (if enabled):</strong>
+                        <ul>
+                            <li>Locate MICR separator in F1 image</li>
+                            <li>Extract 4-digit serial after separator</li>
+                            <li>Map serial to bank name using bank_mapping_file</li>
+                            <li>Apply 3 vs 8 correction algorithm</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Version Detection (if enabled):</strong>
+                        <ul>
+                            <li>Search for oseparator in bottom right of F1</li>
+                            <li>Progressive search: very bottom → bottom quarter → bottom third</li>
+                            <li>Analyze character size after oseparator</li>
+                            <li>Classify as "New" or "Old"</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>ROI Pattern Analysis (if enabled):</strong>
+                        <ul>
+                            <li>Quick Scan: Only check MICR ROI (55% threshold)</li>
+                            <li>Normal Mode: Check all ROIs (70% threshold)</li>
+                            <li>Old cheques: Only check MICR pattern</li>
+                            <li>New cheques: Check all patterns</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Currency & Character Analysis (if enabled):</strong>
+                        <ul>
+                            <li>Search for currency symbol in upper 2/3, right half</li>
+                            <li>Extract ROI based on currency location + offsets</li>
+                            <li>Segment white characters using connected components</li>
+                            <li>Calculate white pixel percentage per character</li>
+                            <li>Mark as fraudulent if >78% white pixels</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>Phase 2: Logo Detection & Finalization (70-100%)</h3>
+                <ol>
+                    <li><strong>Logo Detection (if enabled):</strong>
+                        <ul>
+                            <li>Full Mode: Check all cheques</li>
+                            <li>Selective Mode: Only check specific categories</li>
+                            <li>Filter logos by detected bank name</li>
+                            <li>Three-tier classification:
+                                <ul>
+                                    <li>>0.7: High confidence (Success)</li>
+                                    <li>0.55-0.7: Medium confidence (Lacks - RecheckL)</li>
+                                    <li><0.55: Low confidence (Failed - RecheckF)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Special Bank Identification:</strong>
+                        <ul>
+                            <li>Check if bank name exists in exbanks.txt</li>
+                            <li>Add to listBoxEx if special bank detected</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Final Result Generation:</strong>
+                        <ul>
+                            <li>Combine all processing results</li>
+                            <li>Assign FinalResult status</li>
+                            <li>Populate listBoxFinal with all recheck items</li>
+                            <li>Export to CSV (cheque_processing_results.csv)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- OUTPUT CATEGORIES -->
+            <div class="section">
+                <h2>📊 Output Categories</h2>
+                
+                <div class="output-box">
+                    <h4>listBox1 & comboBox1: Logo Detection Failed (RecheckF)</h4>
+                    <p>Cheques where logo matching scored <0.55 or bank name mismatch occurred</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox2: No MICR or Faded</h4>
+                    <p>F1 files where MICR separator wasn't found (score <0.5)</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox3: F1 File Not Found</h4>
+                    <p>U1 files with no corresponding F1 file (when Bank Code mode is ON)</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox4: Orphaned F1 Files</h4>
+                    <p>F1 files with no corresponding U1 file</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox5: Pattern Recheck (Detailed)</h4>
+                    <p>Cheques that failed ROI pattern analysis (BPR below threshold)</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox6: Bank Not in Coords</h4>
+                    <p>Banks not defined in coords.json - pattern check skipped</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox7: ROI Analysis Details</h4>
+                    <p>Detailed ROI results showing individual pattern percentages</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox8: Pattern Accepted</h4>
+                    <p>Cheques that passed all ROI pattern checks</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox9: All Version Detections</h4>
+                    <p>Complete list showing detected version (New/Old/Unknown) for each F1 file</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox10: Partial Pattern Success</h4>
+                    <p>Some ROIs passed, some failed</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox11: Fraudulent Characters Detected</h4>
+                    <p>Cheques with characters having >78% white pixels (potential tampering)</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox12: Old Cheque Versions</h4>
+                    <p>Subset of listBox9 - only old version cheques</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBox13: Bad Print Quality</h4>
+                    <p>Printing issues: no currency found, out of bounds, failed to load</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBoxEx: Special Banks</h4>
+                    <p>Cheques from banks listed in exbanks.txt</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBoxLogoSuccess: Logo High Confidence</h4>
+                    <p>Logo detection succeeded with score >0.7</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBoxLogoLacks: Logo Lacks Confidence (RecheckL)</h4>
+                    <p>Logo detection medium confidence (0.55-0.7) - manual review needed</p>
+                </div>
+                
+                <div class="output-box">
+                    <h4>listBoxFinal: All Recheck Items</h4>
+                    <p>Combined list of RecheckF (failed) + RecheckL (lacks confidence). Items marked "Needs Manual Review" are from logo lacks category.</p>
+                </div>
+            </div>
+
+            <!-- CONDITIONS & THRESHOLDS -->
+            <div class="section">
+                <h2>⚖️ Processing Conditions & Thresholds</h2>
+                
+                <h3>Template Matching (config.json)</h3>
+                <ul>
+                    <li><code>separator_score</code>: 0.5 (MICR separator detection)</li>
+                    <li><code>currency_score</code>: 0.5 (Currency symbol matching)</li>
+                    <li><code>oseperator_score</code>: 0.5 (Old cheque separator)</li>
+                </ul>
+                
+                <h3>Logo Detection Thresholds</h3>
+                <ul>
+                    <li><code>high_confidence</code>: 0.7 (Success - listBoxLogoSuccess)</li>
+                    <li><code>medium_confidence</code>: 0.55 (Lacks - listBoxLogoLacks, RecheckL)</li>
+                    <li><code>low_confidence</code>: 0.55 (Failed - listBox1, RecheckF)</li>
+                </ul>
+                
+                <h3>ROI Analysis Thresholds</h3>
+                <ul>
+                    <li><code>normal_mode</code>: 70% BPR (Black Pixel Ratio)</li>
+                    <li><code>quick_scan_mode</code>: 55% BPR (MICR pattern only)</li>
+                </ul>
+                
+                <h3>Fraudulent Detection</h3>
+                <ul>
+                    <li><code>white_pixel_percentage</code>: 78.0% (Character tampering threshold)</li>
+                </ul>
+                
+                <h3>Character Segmentation</h3>
+                <ul>
+                    <li><code>min_width</code>: 3 pixels</li>
+                    <li><code>max_width</code>: 25 pixels (250 for currency analysis)</li>
+                    <li><code>min_height</code>: 15 pixels</li>
+                </ul>
+                
+                <h3>Version Detection Logic</h3>
+                <div class="info">
+                    <strong>New Cheque:</strong> Character width >3 AND height >5 after oseparator<br>
+                    <strong>Old Cheque:</strong> Smaller characters or no characters found
+                </div>
+            </div>
+
+            <!-- WARNINGS -->
+            <div class="section">
+                <h2>⚠️ Important Warnings</h2>
+                
+                <div class="warning">
+                    <strong>CSV File Lock:</strong> Close Excel or any program using cheque_processing_results.csv before processing. The application checks for file locks and will warn you if the file is in use.
+                </div>
+                
+                <div class="warning">
+                    <strong>Bank Name Mode Impact:</strong> When bank Code Checkbox is ON, ALL F1 processing is skipped. This means:
+                    <ul>
+                        <li>Version detection always returns "New"</li>
+                        <li>No MICR serial extraction</li>
+                        <li>No orphaned F1 detection</li>
+                        <li>All cheques use the default bank name</li>
+                    </ul>
+                </div>
+                
+                <div class="warning">
+                    <strong>Missing F1 Files:</strong> When Bank Code mode is ON and F1 is missing, the system now:
+                    <ul>
+                        <li>Uses default bank name instead of stopping</li>
+                        <li>Continues processing the U1 file</li>
+                        <li>Adds to listBox3 but doesn't skip the cheque</li>
+                    </ul>
+                </div>
+                
+                <div class="warning">
+                    <strong>Pattern Detection Requirement:</strong> Quick Scan mode requires Pattern Detection to be enabled. The checkbox automatically enables it.
+                </div>
+                
+                <div class="warning">
+                    <strong>Visualization Display:</strong> Debug visualizations only appear for cheques in listBox11 (fraudulent) or listBox13 (bad print), even when visualization is enabled.
+                </div>
+            </div>
+
+            <!-- BEST PRACTICES -->
+            <div class="section">
+                <h2>✅ Best Practices</h2>
+                
+                <h3>For Fast Processing (Batch Operations)</h3>
+                <ol>
+                    <li>Enable <strong>Quick Scan Mode</strong></li>
+                    <li>Enable <strong>Bank Name Mode</strong> if all cheques are from same bank</li>
+                    <li>Disable Visualization, Fraudulent, and Bad Print checks</li>
+                    <li>Review listBox5 and listBox8 for pattern results</li>
+                </ol>
+				
+				 <div class="practice-image">
+                    <img src="image2.png" alt="Fast Processing Configuration" style="max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 3px solid #667eea;">
+                </div>
+                
+                <h3>For Complete Analysis (Quality Control)</h3>
+                <ol>
+                    <li>Disable Quick Scan</li>
+                    <li>Enable Version, Fraudulent, Bad Print detection</li>
+                    <li>Enable Logo Detection (Full Mode)</li>
+                    <li>Enable Visualization for problematic cases</li>
+                    <li>Review all listboxes systematically</li>
+                </ol>
+				
+				<div class="practice-image">
+                    <img src="image3.png" alt="Complete Analysis Configuration" style="max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 3px solid #4caf50;">
+                </div>
+                
+                <h3>For Mixed Bank Processing</h3>
+                <ol>
+                    <li>Disable Bank Name Mode (use Bank Code detection)</li>
+                    <li>Ensure bank_mapping_file is up to date</li>
+                    <li>Enable Logo Detection with Selective Mode</li>
+                    <li>Check listBoxEx for special banks</li>
+                </ol>
+				
+				 <div class="practice-image">
+                    <img src="image4.png" alt="Mixed Bank Processing Configuration" style="max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 3px solid #764ba2;">
+                </div>
+				
+            </div>
+
+            <!-- CSV OUTPUT -->
+            <div class="section">
+                <h2>📄 CSV Output Format</h2>
+                <p>The application exports results to <code>cheque_processing_results.csv</code> with the following columns:</p>
+                
+                <div class="file-structure">
+Filename | LogoResult | LogoScore | SerialMatches | SerialString | BankName | 
+OcrText | ExtractedDigits | FinalResult | RoiOverall | ChequeVersion | 
+Fraudulent | IsSpecialBank
+                </div>
+                
+                <ul>
+                    <li><strong>FinalResult:</strong> Bank name, "RecheckF" (failed), or "RecheckL" (lacks confidence)</li>
+                    <li><strong>RoiOverall:</strong> "RO Accepted", "RO Recheck", "RO Skipped", or "Pattern Detection Disabled"</li>
+                    <li><strong>ChequeVersion:</strong> "New", "Old", "Unknown", or specific error message</li>
+                    <li><strong>Fraudulent:</strong> "Yes" or "No"</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Cheque Processing Application - Technical Documentation</p>
+            <p>For support, please refer to the source code comments or contact development team</p>
+        </footer>
+    </div>
+</body>
+</html>
